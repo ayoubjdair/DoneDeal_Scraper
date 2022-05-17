@@ -159,6 +159,26 @@ for x in range(len(titles)):
     # print(milage[x])
     # print(locations[x])
 
+
 print('                    TITLE                           YEAR    ENGINE     MILAGE         LOCATION        PRICE    LINKS')
 print(tabulate(cars))
 
+layout = [
+    [sg.Text("DoneDeal Scraper GUI")],
+    [sg.Output(size=(90, 20), font='Courier 12')],
+    [sg.Button('Scrape')],
+    [sg.Button('Exit')]
+]
+
+window = sg.Window("DoneDeal Scraper", layout, margins=(200,100)).read()
+
+while True:
+    event, values = window.read()
+    if event == 'Exit' or event == sg.WIN_CLOSED:
+        break
+    if event == 'Scrape':
+        # output = print(tabulate(cars))
+        print("hello world")
+        window.refresh()
+        
+window.close()
