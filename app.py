@@ -1,4 +1,5 @@
 from ctypes import resize
+import math
 import webbrowser
 import requests
 import PySimpleGUI as sg
@@ -16,29 +17,35 @@ links = []
 
 def DrawGUI():
     
-    sg.theme('Dark')
+    sg.theme('Reddit')
     
     layout = [
-        [sg.Text('Enter DoneDeal Link '), sg.Input(default_text='Example: https://www.donedeal.ie/cars/Make/Model', size=(88, 1), key='link')],
-        [sg.Output(size=(120, 20), font='Courier 12')],
-        [sg.Button('Scrape')],
+        [sg.Text('Enter DoneDeal Link'), sg.Input(default_text='Example: https://www.donedeal.ie/cars/Make/Model', size=(60, 1), key='link'), sg.Text('Number Of Pages'), sg.Input(size=(5, 1), key='listings')],
+        [sg.Output(size=(120, 40), font='Courier 12')],
+        [sg.Button('Search')],
         [sg.Input(default_text='Listing #', size=(8, 1), key='listing'), sg.Button('View Online')],
-        [sg.Button('Exit', button_color=('white', 'firebrick3'))]
+        [sg.Button('Exit', button_color=('white', 'firebrick3'))],
+        [sg.T('Made By Ayoub Jdair', font='12', justification='r', expand_x=True)]
     ]
 
-    window = sg.Window("DoneDeal Scraper", layout)
+    window = sg.Window("CarFinder", layout, element_justification='l')
 
     while True:
         event, values = window.read()
         if event == 'Exit' or event == sg.WIN_CLOSED:
             break
-        if event == 'Scrape':
-            if values['link'] == 'Example: https://www.donedeal.ie/cars/Make/Model' or values['link'] == '':
+        if event == 'Search':
+            if values['link'].startswith('Example: ') or values['link'] == '':
                 print("Please Enter a valid link (Like the example above)")
+                window.refresh()
+            if values['listings'] == '':
+                print("Please Enter a valid pages number to search through")
+                print("HINT: Pages are located at the bottom of each page")
                 window.refresh()
             else:
                 link = values['link']
-                output = runScraper(link)
+                listings = values['listings']
+                output = runScraper(link, listings)
                 window.refresh()
         if event == 'View Online':
             if values['listing'] == 'Listing #' or values['listing'] == '':
@@ -50,11 +57,22 @@ def DrawGUI():
             
     window.close()
 
-def runScraper(link):
+def runScraper(link, listings):
     root = link
     pageStart = "&start="
+    pages = int(listings)
 
-    for x in range(1, 115, 23):
+    # src = setResult(root).content
+    # src = setResult(1, root, pageStart).content
+    # soup = BeautifulSoup(src, 'html.parser')
+    # results = soup.find_all('h2')
+    # print(results)
+    # print(results[:-1].text)
+    # pages = (int(math.ceil(int()/27)))
+    # print(pages)
+    # https://www.donedeal.ie/cars/audi/a4?
+    
+    for x in range(1, pages):
         src = setResult(x, root, pageStart).content
         
         soup = BeautifulSoup(src, 'html.parser')
