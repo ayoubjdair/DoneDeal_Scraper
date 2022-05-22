@@ -1,0 +1,7 @@
+ctypes
+math
+webbrowser
+requests
+PySimpleGUI
+bs4
+tabulate
