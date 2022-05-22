@@ -6,13 +6,16 @@ import PySimpleGUI as sg
 from bs4 import BeautifulSoup
 from tabulate import tabulate
 
+links = []
+
 def DrawGUI():
     
     sg.theme('Reddit')
     
     layout = [
         [sg.Text('Enter DoneDeal Link'), sg.Input(default_text='Example: https://www.donedeal.ie/cars/Make/Model?', size=(60, 1), key='link'), sg.Text('Number Of Pages'), sg.Input(size=(5, 1), key='listings')],
-        [sg.Output(size=(120, 40), font='Courier 12')],
+        # [sg.Text('Enter DoneDeal Link'), sg.Input(default_text='https://www.donedeal.ie/cars/Volkswagen/Scirocco?sort=publishdate%20desc', size=(60, 1), key='link'), sg.Text('Number Of Pages'), sg.Input(size=(5, 1), key='listings')],
+        # [sg.Output(size=(120, 40), font='Courier 12')],
         [sg.Button('Search')],
         [sg.Input(default_text='Listing #', size=(8, 1), key='listing'), sg.Button('View Online')],
         [sg.Button('Exit', button_color=('white', 'firebrick3'))],
@@ -58,7 +61,7 @@ def runScraper(link, listings):
     county = []
     time = []
     prices = []
-    links = []
+    links.clear()
     
     root = link
     pageStart = "&start="
